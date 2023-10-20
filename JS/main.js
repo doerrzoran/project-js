@@ -2,9 +2,7 @@ const form = document.querySelector('#movieSearch')
 const image_path = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/'
 const page_path = 'https://www.themoviedb.org/tv'
 const pagination = document.querySelector('#pagination')
-const click1 = document.querySelector('.click1')
-const click2 = document.querySelector('.click2')
-const click3 = document.querySelector('.click3')
+
 
 function showMovies(page){
     const base_url = 'https://api.themoviedb.org/3'
@@ -25,22 +23,34 @@ function showMovies(page){
             <img src="${image_path}${movie.poster_path}" width="20%" height="30%">
         </article>`
         })
-        // pagination.innerHTML = 
+        
+        console.log(response.total_pages)
+        const pages = []
+        for (let index = 0; index < response.total_pages; index++) {
+            pages.push(index)
+        }
+        console.log(pages)
+
+        
+        pagination.innerHTML = pages.map(displayedPage => {
+
+            return `<li><a href="#" id="page${displayedPage}" aria-current="page">${displayedPage}</a></li>`
+            
+        })
+        pages.map(currentPage => {
+            const click = document.querySelector(`#page${currentPage}`)
+            click.addEventListener('click', () => {
+                console.log(`${currentPage}`)
+                showMovies(`${currentPage}`)
+            })
+        })
     })
 }
-        
+
 form.addEventListener('submit', (e) => {
     e.preventDefault()
     showMovies(1)
 
 })
 
-click1.addEventListener('click', () => {
-    showMovies(1)
-})
-click1.addEventListener('click', () => {
-    showMovies(2)
-})
-click1.addEventListener('click', () => {
-    showMovies(3)
-})
+
